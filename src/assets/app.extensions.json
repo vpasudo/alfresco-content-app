@@ -9,11 +9,11 @@
   "$description": "Core application extensions and features",
   "$references": ["aos.plugin.json", "app.header.json"],
 
-  "$routes": [
+  "routes": [
     {
       "id": "plugin.route.1",
-      "path": "plugins/route1",
-      "component": "plugin1#entry"
+      "path": "plugins/about",
+      "component": "about#entry"
     }
   ],
 

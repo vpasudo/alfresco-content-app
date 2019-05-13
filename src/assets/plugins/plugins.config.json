@@ -1,4 +1,8 @@
 {
+  "about": {
+    "name": "About",
+    "path": "/assets/plugins/about.js"
+  },
   "plugin1": {
     "name": "Plugin 1",
     "path": "/assets/plugins/plugin1.js",
