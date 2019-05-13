@@ -1,0 +1,16 @@
+{
+  "name": "@alfresco/build-plugin",
+  "description": "Angular builder for Alfresco ADF plugins.",
+  "version": "1.0.0",
+  "builders": "builders.json",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.builders.json"
+  },
+  "dependencies": {
+    "@angular-devkit/build-angular": "~0.13.8",
+    "rxjs": "6.3.3"
+  },
+  "devDependencies": {
+    "typescript": "^3.4.4"
+  }
+}

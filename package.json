@@ -3,6 +3,7 @@
   "version": "1.8.0",
   "license": "LGPL-3.0",
   "scripts": {
+    "postinstall": "(cd builders && npm run build)",
     "ng": "ng",
     "start": "npm run build.shared && npm run build.extensions && ng serve --open",
     "start:prod": "node --max-old-space-size=8192 node_modules/@angular/cli/bin/ng serve --prod --open",
@@ -67,7 +68,7 @@
     "moment": "^2.24.0",
     "moment-es6": "1.0.0",
     "pdfjs-dist": "^2.0.489",
-    "rxjs": "^6.5.1",
+    "rxjs": "6.3.3",
     "zone.js": "0.8.29"
   },
   "devDependencies": {
