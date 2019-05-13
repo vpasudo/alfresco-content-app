@@ -55,6 +55,7 @@ import { AppConfigService, AuthenticationService } from '@alfresco/adf-core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { RepositoryInfo, NodeEntry } from '@alfresco/js-api';
 import { ViewerRules } from './viewer.rules';
+import { DynamicRouteContentComponent } from './components/dynamic-route-content/dynamic-route-content.component';
 
 @Injectable({
   providedIn: 'root'
@@ -351,22 +352,66 @@ export class AppExtensionService implements RuleContext {
     return this.extensions.getComponentById(id);
   }
 
+  // getApplicationRoutes(): Array<Route> {
+  //   return this.extensions.routes.map(route => {
+  //     const guards = this.extensions.getAuthGuards(
+  //       route.auth && route.auth.length > 0 ? route.auth : this.defaults.auth
+  //     );
+
+  //     return {
+  //       path: route.path,
+  //       component: this.getComponentById(route.layout || this.defaults.layout),
+  //       canActivateChild: guards,
+  //       canActivate: guards,
+  //       children: [
+  //         {
+  //           path: '',
+  //           component: this.getComponentById(route.component),
+  //           data: route.data
+  //         }
+  //       ]
+  //     };
+  //   });
+  // }
+
+  /**
+   * Returns an list of application routes populated by extensions.
+   */
   getApplicationRoutes(): Array<Route> {
     return this.extensions.routes.map(route => {
       const guards = this.extensions.getAuthGuards(
         route.auth && route.auth.length > 0 ? route.auth : this.defaults.auth
       );
 
+      const isDynamicPlugin = route.component.includes('#');
+
+      const component = isDynamicPlugin
+        ? DynamicRouteContentComponent
+        : this.extensions.getComponentById(route.component);
+
+      let data = route.data || {};
+
+      if (isDynamicPlugin) {
+        const [pluginId, componentId] = route.component.split('#');
+        data = {
+          ...route.data,
+          pluginId,
+          componentId
+        };
+      }
+
       return {
         path: route.path,
-        component: this.getComponentById(route.layout || this.defaults.layout),
+        component: this.extensions.getComponentById(
+          route.layout || this.defaults.layout
+        ),
         canActivateChild: guards,
         canActivate: guards,
         children: [
           {
             path: '',
-            component: this.getComponentById(route.component),
-            data: route.data
+            component,
+            data
           }
         ]
       };
