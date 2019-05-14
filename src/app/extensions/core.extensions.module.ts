@@ -55,7 +55,6 @@ import * as adfExtensions from '@alfresco/adf-extensions';
 import { PLUGIN_EXTERNALS_MAP } from './plugin-loader/plugin-externals';
 import { DynamicContainerComponent } from './components/dynamic-container/dynamic-container.component';
 import { DynamicRouteContentComponent } from './components/dynamic-route-content/dynamic-route-content.component';
-import { PluginsConfigProvider } from './plugin-loader/plugins-config.provider';
 import { PluginLoaderService } from './plugin-loader/plugin-loader.service';
 import { DefaultPluginLoaderService } from './plugin-loader/default-plugin-loader.service';
 import { setupExtensions } from './startup-extension-factory';
@@ -71,12 +70,11 @@ export class CoreExtensionsModule {
     return {
       ngModule: CoreExtensionsModule,
       providers: [
-        PluginsConfigProvider,
         { provide: PluginLoaderService, useClass: DefaultPluginLoaderService },
         {
           provide: APP_INITIALIZER,
           useFactory: setupExtensions,
-          deps: [AppExtensionService, PluginsConfigProvider],
+          deps: [AppExtensionService, PluginLoaderService],
           multi: true
         }
       ]

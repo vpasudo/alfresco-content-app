@@ -17,11 +17,21 @@
 
 import { NgModuleFactory } from '@angular/core';
 
+export interface PluginsConfig {
+  [key: string]: {
+    name: string;
+    path: string;
+    deps: string[];
+  };
+}
+
 export abstract class PluginLoaderService {
   protected constructor() {
     this.provideExternals();
   }
 
   abstract provideExternals(): void;
-  abstract load<T>(pluginName: string): Promise<NgModuleFactory<T>>;
+  abstract async load(): Promise<void>;
+  abstract setup(config: PluginsConfig);
+  abstract loadModule<T>(pluginName: string): Promise<NgModuleFactory<T>>;
 }

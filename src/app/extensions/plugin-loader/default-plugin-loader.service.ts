@@ -16,16 +16,31 @@
  */
 
 import { Injectable, NgModuleFactory } from '@angular/core';
-import { PluginLoaderService } from './plugin-loader.service';
+import { PluginLoaderService, PluginsConfig } from './plugin-loader.service';
 import { PLUGIN_EXTERNALS_MAP } from './plugin-externals';
-import { PluginsConfigProvider } from './plugins-config.provider';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DefaultPluginLoaderService extends PluginLoaderService {
-  constructor(private configProvider: PluginsConfigProvider) {
+  config: PluginsConfig;
+  configPath = `${document.location.origin}/assets/plugins/plugins.config.json`;
+
+  constructor(private http: HttpClient) {
     super();
+  }
+
+  async load() {
+    const config = await this.http
+      .get<PluginsConfig>(this.configPath)
+      .toPromise();
+
+    this.setup(config);
+  }
+
+  setup(config: PluginsConfig) {
+    this.config = config;
   }
 
   provideExternals() {
@@ -34,8 +49,8 @@ export class DefaultPluginLoaderService extends PluginLoaderService {
     );
   }
 
-  load<T>(pluginName: string): Promise<NgModuleFactory<T>> {
-    const { config } = this.configProvider;
+  loadModule<T>(pluginName: string): Promise<NgModuleFactory<T>> {
+    const { config } = this;
     if (!config[pluginName]) {
       throw Error(`Can't find appropriate plugin`);
     }

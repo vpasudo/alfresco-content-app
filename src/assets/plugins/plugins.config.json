@@ -1,6 +1,7 @@
 {
   "about": {
     "name": "About",
+    "load": "auto",
     "path": "/assets/plugins/about.js"
   },
   "plugin1": {

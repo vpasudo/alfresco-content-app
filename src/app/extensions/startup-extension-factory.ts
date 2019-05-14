@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-import { PluginsConfigProvider } from './plugin-loader/plugins-config.provider';
 import { AppExtensionService } from './extension.service';
+import { PluginLoaderService } from './plugin-loader/plugin-loader.service';
 
 export function setupExtensions(
   appExtensionService: AppExtensionService,
-  pluginsConfigProvider: PluginsConfigProvider
+  pluginLoaderService: PluginLoaderService
 ): Function {
   return () =>
-    Promise.all([appExtensionService.load(), pluginsConfigProvider.load()]);
+    Promise.all([appExtensionService.load(), pluginLoaderService.load()]);
 }
