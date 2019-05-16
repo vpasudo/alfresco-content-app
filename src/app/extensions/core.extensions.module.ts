@@ -37,7 +37,11 @@ import { MetadataTabComponent } from '../components/info-drawer/metadata-tab/met
 import { LibraryMetadataTabComponent } from '../components/info-drawer/library-metadata-tab/library-metadata-tab.component';
 import { CommentsTabComponent } from '../components/info-drawer/comments-tab/comments-tab.component';
 import { VersionsTabComponent } from '../components/info-drawer/versions-tab/versions-tab.component';
-import { ExtensionsModule, ExtensionService } from '@alfresco/adf-extensions';
+import {
+  ExtensionsModule,
+  ExtensionService,
+  ExtensionLoaderService
+} from '@alfresco/adf-extensions';
 import { LocationLinkComponent } from '../components/common/location-link/location-link.component';
 import { DocumentDisplayModeComponent } from '../components/toolbar/document-display-mode/document-display-mode.component';
 import { ToggleJoinLibraryButtonComponent } from '../components/toolbar/toggle-join-library/toggle-join-library-button.component';
@@ -53,6 +57,8 @@ import {
 
 import { PluginLoaderService } from '@alfresco/aca-shared/extensions';
 import { DefaultPluginLoaderService } from './plugin-loader/default-plugin-loader.service';
+import { DynamicExtensionService } from './dynamic-extension.service';
+import { DynamicExtensionLoaderService } from './dynamic-loader.service';
 
 export function setupExtensions(
   appExtensionService: AppExtensionService
@@ -68,6 +74,11 @@ export class CoreExtensionsModule {
     return {
       ngModule: CoreExtensionsModule,
       providers: [
+        {
+          provide: ExtensionLoaderService,
+          useClass: DynamicExtensionLoaderService
+        },
+        { provide: ExtensionService, useClass: DynamicExtensionService },
         { provide: PluginLoaderService, useClass: DefaultPluginLoaderService },
         {
           provide: APP_INITIALIZER,

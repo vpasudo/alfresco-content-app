@@ -56,7 +56,6 @@ import { DynamicRouteContentComponent } from '@alfresco/aca-shared/extensions';
 import { AppConfigService, AuthenticationService } from '@alfresco/adf-core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { RepositoryInfo, NodeEntry } from '@alfresco/js-api';
-import { PluginLoaderService } from '@alfresco/aca-shared/extensions';
 import { ViewerRules } from './viewer.rules';
 
 @Injectable({
@@ -117,8 +116,7 @@ export class AppExtensionService implements RuleContext {
     public permissions: NodePermissionService,
     protected appConfig: AppConfigService,
     protected matIconRegistry: MatIconRegistry,
-    protected sanitizer: DomSanitizer,
-    protected pluginLoader: PluginLoaderService
+    protected sanitizer: DomSanitizer
   ) {
     this.references$ = this._references.asObservable();
 
@@ -131,19 +129,7 @@ export class AppExtensionService implements RuleContext {
   }
 
   async load() {
-    let config = await this.extensions.load();
-
-    await this.pluginLoader.load();
-    const plugins = await this.pluginLoader.getAutoPlugins();
-
-    if (plugins.length > 0) {
-      config = mergeObjects(config, ...plugins);
-      console.log(config);
-    }
-
-    // todo: workaround,
-    // needs to be a custom service that loads and mutates the config
-    this.extensions.routes = config.routes;
+    const config = await this.extensions.load();
     this.setup(config);
   }
 
