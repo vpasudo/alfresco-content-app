@@ -23,7 +23,7 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   ExtensionService,
   ExtensionLoaderService,
@@ -32,32 +32,28 @@ import {
   ExtensionConfig
 } from '@alfresco/adf-extensions';
 import { PluginLoaderService } from '@alfresco/aca-shared/extensions';
-import { DynamicExtensionLoaderService } from './dynamic-loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DynamicExtensionService extends ExtensionService {
   constructor(
-    @Inject(ExtensionLoaderService)
-    protected dynamicLoader: DynamicExtensionLoaderService,
+    loader: ExtensionLoaderService,
     componentRegister: ComponentRegisterService,
     ruleService: RuleService,
     protected pluginLoader: PluginLoaderService
   ) {
-    super(dynamicLoader, componentRegister, ruleService);
+    super(loader, componentRegister, ruleService);
   }
 
   async load(): Promise<ExtensionConfig> {
     await this.pluginLoader.load();
     const plugins = await this.pluginLoader.getAutoPlugins();
-    const config = await this.dynamicLoader.load(
+    const config = await this.loader.load(
       this.configPath,
       this.pluginsPath,
       plugins
     );
-
-    console.log(config);
 
     this.setup(config);
     return config;
