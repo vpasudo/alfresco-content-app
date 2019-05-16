@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-import { DynamicContainerComponent } from '../dynamic-container/dynamic-container.component';
-import { OnInit, Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PluginLoaderService } from '../../plugin-loader/plugin-loader.service';
+import { PluginLoaderService } from '../../services/plugin-loader.service';
+import { DynamicContainerComponent } from '../dynamic-container/dynamic-container.component';
 
 export interface DynamicRouteData {
   pluginId: string;

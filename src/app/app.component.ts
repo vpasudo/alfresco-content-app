@@ -50,6 +50,7 @@ import { AppService, ContentApiService } from '@alfresco/aca-shared';
 import { DiscoveryEntry, GroupsApi, Group } from '@alfresco/js-api';
 import { Subject } from 'rxjs';
 import { INITIAL_APP_STATE } from './store/initial-state';
+import { APP_ROUTES } from './app.routes';
 
 @Component({
   selector: 'app-root',
@@ -114,7 +115,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetCurrentUrlAction(router.url));
       });
 
-    this.router.config.unshift(...this.extensions.getApplicationRoutes());
+    this.router.config = [
+      ...this.extensions.getApplicationRoutes(),
+      ...APP_ROUTES
+    ];
 
     this.uploadService.fileUploadError.subscribe(error =>
       this.onFileUploadedError(error)

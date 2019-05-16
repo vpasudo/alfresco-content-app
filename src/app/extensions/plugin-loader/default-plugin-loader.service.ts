@@ -15,19 +15,23 @@
  * limitations under the License.
  */
 
-import { Injectable, NgModuleFactory } from '@angular/core';
-import { PluginLoaderService, PluginsConfig } from './plugin-loader.service';
+import { Injectable, NgModuleFactory, Injector } from '@angular/core';
+import {
+  PluginLoaderService,
+  PluginsConfig
+} from '@alfresco/aca-shared/extensions';
 import { PLUGIN_EXTERNALS_MAP } from './plugin-externals';
 import { HttpClient } from '@angular/common/http';
+import { ExtensionConfig } from '@alfresco/adf-extensions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DefaultPluginLoaderService extends PluginLoaderService {
-  config: PluginsConfig;
   configPath = `${document.location.origin}/assets/plugins/plugins.config.json`;
+  config: PluginsConfig;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private injector: Injector) {
     super();
   }
 
@@ -36,11 +40,37 @@ export class DefaultPluginLoaderService extends PluginLoaderService {
       .get<PluginsConfig>(this.configPath)
       .toPromise();
 
-    this.setup(config);
+    return this.setup(config);
   }
 
-  setup(config: PluginsConfig) {
+  async setup(config: PluginsConfig) {
     this.config = config;
+  }
+
+  async getAutoPlugins(): Promise<ExtensionConfig[]> {
+    const autoLoad = Object.keys(this.config)
+      .filter(key => this.config[key].load === 'auto')
+      .map(key => this.loadModule(key));
+
+    const result: ExtensionConfig[] = [];
+
+    await Promise.all(autoLoad).then((modules: any[]) => {
+      if (modules && modules.length > 0) {
+        for (const moduleFactory of modules) {
+          const moduleRef = moduleFactory.create(this.injector);
+
+          if (typeof moduleRef.instance.getConfig === 'function') {
+            const pluginConfig: ExtensionConfig = moduleRef.instance.getConfig();
+
+            if (pluginConfig) {
+              result.push(pluginConfig);
+            }
+          }
+        }
+      }
+    });
+
+    return result;
   }
 
   provideExternals() {

@@ -42,6 +42,7 @@ import {
   ContentModule
 } from '@alfresco/adf-content-services';
 import { AppRouteReuseStrategy, SharedModule } from '@alfresco/aca-shared';
+import { SharedExtensionsModule } from '@alfresco/aca-shared/extensions';
 
 import { AppComponent } from './app.component';
 import { APP_ROUTES } from './app.routes';
@@ -110,7 +111,8 @@ import { environment } from '../environments/environment';
     AppSearchInputModule,
     AppSearchResultsModule,
     AppHeaderModule,
-    AppNodeVersionModule
+    AppNodeVersionModule,
+    SharedExtensionsModule
   ],
   declarations: [
     AppComponent,

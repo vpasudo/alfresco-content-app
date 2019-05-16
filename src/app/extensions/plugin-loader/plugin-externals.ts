@@ -21,12 +21,16 @@ import * as forms from '@angular/forms';
 import * as router from '@angular/router';
 import * as rxjs from 'rxjs';
 import * as tslib from 'tslib';
+import * as adfExtensions from '@alfresco/adf-extensions';
+import * as acaShared from '@alfresco/aca-shared';
 
 export const PLUGIN_EXTERNALS_MAP = {
   'ng.core': core,
   'ng.common': common,
   'ng.forms': forms,
   'ng.router': router,
+  'adf.extensions': adfExtensions,
+  'aca.shared': acaShared,
   rxjs,
   tslib
 };

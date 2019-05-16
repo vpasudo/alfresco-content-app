@@ -51,19 +51,17 @@ import {
   LibraryRoleColumnComponent
 } from '@alfresco/adf-content-services';
 
-import * as adfExtensions from '@alfresco/adf-extensions';
-import { PLUGIN_EXTERNALS_MAP } from './plugin-loader/plugin-externals';
-import { DynamicContainerComponent } from './components/dynamic-container/dynamic-container.component';
-import { DynamicRouteContentComponent } from './components/dynamic-route-content/dynamic-route-content.component';
-import { PluginLoaderService } from './plugin-loader/plugin-loader.service';
+import { PluginLoaderService } from '@alfresco/aca-shared/extensions';
 import { DefaultPluginLoaderService } from './plugin-loader/default-plugin-loader.service';
-import { setupExtensions } from './startup-extension-factory';
+
+export function setupExtensions(
+  appExtensionService: AppExtensionService
+): Function {
+  return () => appExtensionService.load();
+}
 
 @NgModule({
-  imports: [CommonModule, CoreModule.forChild(), ExtensionsModule],
-  declarations: [DynamicContainerComponent, DynamicRouteContentComponent],
-  exports: [DynamicContainerComponent, DynamicRouteContentComponent],
-  entryComponents: [DynamicContainerComponent, DynamicRouteContentComponent]
+  imports: [CommonModule, CoreModule.forChild(), ExtensionsModule]
 })
 export class CoreExtensionsModule {
   static forRoot(): ModuleWithProviders {
@@ -88,8 +86,6 @@ export class CoreExtensionsModule {
   }
 
   constructor(extensions: ExtensionService) {
-    PLUGIN_EXTERNALS_MAP['adf.extensions'] = adfExtensions;
-
     extensions.setComponents({
       'app.layout.main': AppLayoutComponent,
       'app.components.tabs.metadata': MetadataTabComponent,

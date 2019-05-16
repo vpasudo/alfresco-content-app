@@ -9,14 +9,6 @@
   "$description": "Core application extensions and features",
   "$references": ["aos.plugin.json", "app.header.json"],
 
-  "routes": [
-    {
-      "id": "plugin.route.1",
-      "path": "plugins/about",
-      "component": "about#entry"
-    }
-  ],
-
   "rules": [
     {
       "id": "app.toolbar.favorite.canAdd",

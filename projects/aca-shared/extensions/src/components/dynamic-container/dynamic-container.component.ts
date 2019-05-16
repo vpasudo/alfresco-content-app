@@ -23,7 +23,7 @@ import {
   ViewContainerRef,
   Injector
 } from '@angular/core';
-import { PluginLoaderService } from '../../plugin-loader/plugin-loader.service';
+import { PluginLoaderService } from '../../services/plugin-loader.service';
 
 /**
  * @description

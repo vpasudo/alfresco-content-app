@@ -15,13 +15,26 @@
  * limitations under the License.
  */
 
-import { AppExtensionService } from './extension.service';
-import { PluginLoaderService } from './plugin-loader/plugin-loader.service';
+import { NgModuleFactory } from '@angular/core';
+import { ExtensionConfig } from '@alfresco/adf-extensions';
 
-export function setupExtensions(
-  appExtensionService: AppExtensionService,
-  pluginLoaderService: PluginLoaderService
-): Function {
-  return () =>
-    Promise.all([appExtensionService.load(), pluginLoaderService.load()]);
+export interface PluginsConfig {
+  [key: string]: {
+    name: string;
+    load: 'auto' | 'lazy';
+    path: string;
+    deps: string[];
+  };
+}
+
+export abstract class PluginLoaderService {
+  protected constructor() {
+    this.provideExternals();
+  }
+
+  abstract provideExternals(): void;
+  abstract async load(): Promise<void>;
+  abstract setup(config: PluginsConfig);
+  abstract async getAutoPlugins(): Promise<ExtensionConfig[]>;
+  abstract loadModule<T>(pluginName: string): Promise<NgModuleFactory<T>>;
 }
