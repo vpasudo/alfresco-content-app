@@ -23,6 +23,8 @@ import * as rxjs from 'rxjs';
 import * as tslib from 'tslib';
 import * as adfExtensions from '@alfresco/adf-extensions';
 import * as acaShared from '@alfresco/aca-shared';
+import * as ngxTranslate from '@ngx-translate/core';
+import * as adfCore from '@alfresco/adf-core';
 
 export const PLUGIN_EXTERNALS_MAP = {
   'ng.core': core,
@@ -31,6 +33,8 @@ export const PLUGIN_EXTERNALS_MAP = {
   'ng.router': router,
   'adf.extensions': adfExtensions,
   'aca.shared': acaShared,
+  'ngx.translate.core': ngxTranslate,
+  'adf.core': adfCore,
   rxjs,
   tslib
 };

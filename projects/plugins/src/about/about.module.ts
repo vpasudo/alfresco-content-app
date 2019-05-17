@@ -1,11 +1,34 @@
+import { ExtensionConfig } from '@alfresco/adf-extensions';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
+import { TranslateModule } from '@ngx-translate/core';
+import { PageLayoutModule } from '@alfresco/aca-shared';
 import { AboutComponent } from './about.component';
-import { ExtensionConfig } from '@alfresco/adf-extensions';
+import config from './about.config';
+import { ExtensionListComponent } from './extension-list/extension-list.component';
+import { LicenseListComponent } from './license-list/license-list.component';
+import { ModuleListComponent } from './module-list/module-list.component';
+import { PackageListComponent } from './package-list/package-list.component';
+import { StatusListComponent } from './status-list/status-list.component';
+import { AppConfigModule } from '@alfresco/adf-core';
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [AboutComponent],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    TranslateModule.forChild(),
+    PageLayoutModule,
+    AppConfigModule
+  ],
+  declarations: [
+    AboutComponent,
+    ExtensionListComponent,
+    LicenseListComponent,
+    ModuleListComponent,
+    PackageListComponent,
+    StatusListComponent
+  ],
   exports: [AboutComponent],
   entryComponents: [AboutComponent]
 })
@@ -14,22 +37,7 @@ export class AboutModule {
   static AboutComponent = AboutComponent;
 
   getConfig(): ExtensionConfig {
-    return {
-      $id: 'about',
-      $name: 'about',
-      $version: '1.0.0',
-      $vendor: 'Alfresco',
-      $license: 'LGPL',
-      $runtime: '1.8.0',
-
-      routes: [
-        {
-          id: 'plugin.route.1',
-          path: 'plugins/about',
-          component: 'about#entry'
-        }
-      ]
-    };
+    return config;
   }
 
   getName(): string {
