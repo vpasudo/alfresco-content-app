@@ -10,6 +10,11 @@ const fs = require('fs');
 const projectRoot = path.resolve(__dirname);
 const downloadFolder = `${projectRoot}/e2e-downloads`;
 
+const dotenv = require('dotenv');
+dotenv.config({
+  path: `${projectRoot}/.env.conf`
+});
+
 const width = 1366;
 const height = 768;
 
@@ -36,17 +41,18 @@ exports.config = {
   },
 
   specs: [
-    './e2e/suites/authentication/*.test.ts',
-    './e2e/suites/list-views/*.test.ts',
-    './e2e/suites/application/*.test.ts',
-    './e2e/suites/navigation/*.test.ts',
-    './e2e/suites/pagination/*.test.ts',
-    './e2e/suites/search/*.test.ts',
-    './e2e/suites/actions-available/**/*.test.ts',
-    './e2e/suites/actions/*.test.ts',
-    './e2e/suites/viewer/*.test.ts',
-    './e2e/suites/info-drawer/*.test.ts',
-    './e2e/suites/extensions/*.test.ts'
+    // './e2e/suites/authentication/*.test.ts',
+    // './e2e/suites/list-views/*.test.ts',
+    // './e2e/suites/application/*.test.ts',
+    // './e2e/suites/navigation/*.test.ts',
+    // './e2e/suites/pagination/*.test.ts',
+    // './e2e/suites/search/*.test.ts',
+    // './e2e/suites/actions-available/**/*.test.ts',
+    // './e2e/suites/actions/*.test.ts',
+    // './e2e/suites/viewer/*.test.ts',
+    // './e2e/suites/info-drawer/*.test.ts',
+    // './e2e/suites/extensions/*.test.ts'
+    './e2e/suites/accessibility/axe-smoke.test.ts'
   ],
 
   suites: {
@@ -83,7 +89,9 @@ exports.config = {
     ],
     viewer: './e2e/suites/viewer/*.test.ts',
     infoDrawer: './e2e/suites/info-drawer/*.test.ts',
-    extensions: './e2e/suites/extensions/*.test.ts'
+    extensions: './e2e/suites/extensions/*.test.ts',
+
+    axe: './e2e/suites/accessibility/axe-smoke.test.ts'
   },
 
   SELENIUM_PROMISE_MANAGER: false,
@@ -111,7 +119,8 @@ exports.config = {
 
   directConnect: true,
 
-  // baseUrl: 'http://localhost:4000',
+  baseUrl: process.env.ADW_URL || 'http://localhost:4000',
+
   getPageTimeout: 50000,
 
   framework: 'jasmine',

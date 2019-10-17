@@ -29,6 +29,7 @@ import { BROWSER_WAIT_TIMEOUT, E2E_ROOT_PATH, EXTENSIBILITY_CONFIGS } from '../c
 const path = require('path');
 const fs = require('fs');
 const StreamZip = require('node-stream-zip');
+const myAxe = require('axe-webdriverjs');
 
 
 export class Utils {
@@ -176,5 +177,48 @@ export class Utils {
     const el = browser.element(by.id('app-upload-file-version'));
     await el.sendKeys(`${E2E_ROOT_PATH}/resources/test-files/${fileFromOS}`);
   }
+
+  static async axeCheck(selector: string = 'html') {
+    await myAxe(browser.driver)
+      .include(selector)
+      .options({
+        reporter: 'v2',
+        // tags: ['best-practice', 'section508', 'wcag2aa', 'wcag2a']
+      })
+      .disableRules('color-contrast')
+      .analyze(function(error, results) {
+        if (error) {
+          console.log('=== AXE FAILED WITH ERROR: ', error);
+        }
+
+        const violations = results.violations;
+        console.log('\n\nAccessibility Violations: ', violations.length);
+
+        if (violations.length > 0) {
+
+          violations.forEach((violation, index) => {
+            console.log(`\n===== VIOLATION ${index + 1} : =====\n`);
+
+            console.log('DESCRIPTION :\t', violation.description);
+            console.log('HELP :\t\t', violation.help);
+
+            const nodes = violation.nodes;
+
+            console.log('NODES :');
+
+            nodes.forEach((elem, idx) => {
+              console.log(`\n  Node ${idx + 1} : `);
+              console.log('     IMPACT : ', elem.all.map(entry => entry.impact));
+              console.log('     MESSAGE : ', elem.all.map(entry => entry.message));
+              console.log('     HTML : ', elem.html);
+              console.log('     TARGET: ', elem.target);
+            });
+
+            console.log(`\n==========`);
+          });
+        }
+        expect(violations.length).toBe(0);
+      });
+  };
 
 }

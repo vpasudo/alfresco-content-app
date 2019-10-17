@@ -23,8 +23,8 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const BROWSER_RESOLUTION_WIDTH = 1200;
-export const BROWSER_RESOLUTION_HEIGHT = 800;
+// export const BROWSER_RESOLUTION_WIDTH = 1200;
+// export const BROWSER_RESOLUTION_HEIGHT = 800;
 
 export const BROWSER_WAIT_TIMEOUT = 10000;
 
@@ -32,13 +32,14 @@ export const BROWSER_WAIT_TIMEOUT = 10000;
 export const USE_HASH_STRATEGY = true;
 
 // Repository configs
-export const REPO_API_HOST = 'http://localhost:8080';
-export const REPO_API_TENANT = '-default-';
+export const REPO_API_HOST = process.env.REPO_HOST || 'http://localhost:8080';
 
 // Admin details
-export const ADMIN_USERNAME = 'admin';
-export const ADMIN_PASSWORD = 'admin';
-export const ADMIN_FULL_NAME = 'Administrator';
+export const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
+
+export const IDS_ADMIN_USERNAME = process.env.IDS_ADMIN_USERNAME || 'admin';
+export const IDS_ADMIN_PASSWORD = process.env.IDS_ADMIN_PASSWORD || 'admin';
 
 export const E2E_ROOT_PATH = __dirname;
 
