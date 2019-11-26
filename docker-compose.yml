@@ -2,7 +2,8 @@ version: '2'
 
 services:
   alfresco:
-    image: alfresco/alfresco-content-repository-community:latest
+    image: alfresco/alfresco-content-repository-community:6.1.2-ga
+
     mem_limit: 1500m
     volumes:
       - ./docker/acs-cm:/usr/local/tomcat/shared/classes/alfresco/extension
@@ -17,11 +18,13 @@ services:
         -Dsolr.secureComms=none
         -Dsolr.base.url=/solr
         -Dindex.subsystem.name=solr6
-        -Dshare.host=127.0.0.1
+        -Dshare.host=192.168.2.106
         -Dshare.port=8080
-        -Dalfresco.host=localhost
+        -Dshare.protocol=http
+        -Dalfresco.host=192.168.2.106
         -Dalfresco.port=8080
-        -Daos.baseUrlOverwrite=http://localhost:8080/alfresco/aos
+        -Dalfresco.protocol=http
+        -Daos.baseUrlOverwrite=http://192.168.2.106:8080/alfresco/aos
         -Dmessaging.broker.url="failover:(nio://activemq:61616)?timeout=3000&jms.useCompression=true"
         -Ddeployment.method=DOCKER_COMPOSE
         -Dlocal.transform.service.enabled=true
@@ -132,6 +135,8 @@ services:
     build: .
     depends_on:
       - alfresco
+    environment:
+      BASE_PATH: ./
     ports:
       - 4001:8080
 
