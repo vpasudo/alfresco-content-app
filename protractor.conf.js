@@ -219,6 +219,9 @@ exports.config = {
       buildNumber = Date.now();
     }
     console.log('Build nr: ', buildNumber);
+    console.log('U: ', process.env.SCREENSHOT_USERNAME);
+    console.log('P: ', process.env.SCREENSHOT_PASSWORD);
+    console.log('P: ', process.env.SCREENSHOT_URL);
 
     let alfrescoJsApi = new AlfrescoApi({
       provider: 'ECM',
@@ -226,7 +229,7 @@ exports.config = {
     });
 
     try {
-      alfrescoJsApi.login(
+      await alfrescoJsApi.login(
         process.env.SCREENSHOT_USERNAME,
         process.env.SCREENSHOT_PASSWORD
       );
